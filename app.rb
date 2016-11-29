@@ -7,7 +7,7 @@ $LOAD_PATH << File.join(__dir__, "lib")
 require 'sinatra'
 require 'lib/hfst'
 
-class HFST < Sinatra::Base
+class HFSTapp < Sinatra::Base
   helpers do
     def app_root
       "#{env["rack.url_scheme"]}://#{env["HTTP_HOST"]}#{env["SCRIPT_NAME"]}"
@@ -26,7 +26,7 @@ class HFST < Sinatra::Base
   post "/experiments" do
     ag  = params[:antigen]
     cln = params[:cell_line_name]
-    
+
     ### DANGER ###
     @chipseq_data = HFST.get_chipseq(ag, cln, "./public/data/chipatlas/chip_experiments.tab", "/data/chipatlas")
     @rnaseq_data = HFST.get_rnaseq(cln, "./lib/sparql/ebi_biosample.rq", "./public/data/sra/SRA_Run_Members.tab")
