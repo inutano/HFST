@@ -29,6 +29,7 @@ namespace :hfst do
       mkdir_p outdir
       out = File.join(outdir, "#{expid}.bed")
       sh "wget -q -O #{out} http://dbarchive.biosciencedbc.jp/kyushu-u/hg19/eachData/bed05/#{expid}.05.bed"
+      sleep 1
     end
   end
 
