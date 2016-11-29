@@ -1,4 +1,5 @@
 require 'net/https'
+require 'json'
 
 module HFST
   class EBIRDF
@@ -26,7 +27,8 @@ module HFST
         "format" => "json",
       })
 
-      http.request(req) # expect to return list of biosample ids matched to query cell line name
+      res = http.request(req)
+      JSON.load(res)["results"]["bindings"].map{|d| d["sampleid"]["value"]}.uniq # returns array of biosample id
     end
   end
 end
