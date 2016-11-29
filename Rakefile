@@ -8,7 +8,7 @@ require 'lib/hfst'
 
 # Constants
 PROJ_ROOT = File.expand_path(__dir__)
-DATA_DIR  = File.join(PROJ_ROOT, "data")
+DATA_DIR  = File.join(PROJ_ROOT, "public", "data")
 
 Dir["#{PROJ_ROOT}/lib/tasks/**/*.rake"].each do |path|
   load path
