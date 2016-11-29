@@ -1,4 +1,4 @@
-require 'net/https'
+require 'open-uri'
 require 'json'
 
 module HFST
@@ -7,28 +7,18 @@ module HFST
       @cln = cell_line_name
     end
 
-    def build_query(template)
-      query = open(template).read.sub(/CELL_LINE_NAME/,@cln.downcase)
-      URI.encode(query)
+    def query(template)
+      q = open(template).read.sub(/CELL_LINE_NAME/,@cln.downcase)
+      URI.encode_www_form_component(q)
     end
 
     def endpoint_url
-      URI.parse("https://www.ebi.ac.uk/rdf/services/biosamples/sparql")
+      "https://www.ebi.ac.uk/rdf/services/biosamples/sparql"
     end
 
-    def post(template)
-      http = Net::HTTP.new(endpoint_url.host, endpoint_url.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-      req = Net::HTTP::Post.new(endpoint_url.path)
-      req.set_form_data({
-        "query" => build_query(template),
-        "format" => "json",
-      })
-
-      res = http.request(req)
-      JSON.load(res)["results"]["bindings"].map{|d| d["sampleid"]["value"]}.uniq # returns array of biosample id
+    def biosample_ids(template)
+      res = JSON.load(open(endpoint_url + "?query=" + query(template) + "?format=JSON"))
+      res["results"]["bindings"].map{|d| d["sampleid"]["value"]}.uniq # an array of biosample id
     end
   end
 end
