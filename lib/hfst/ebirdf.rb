@@ -17,7 +17,7 @@ module HFST
     end
 
     def biosample_ids(template)
-      res = JSON.load(open(endpoint_url + "?query=" + query(template) + "?format=JSON"))
+      res = JSON.load(open(endpoint_url + "?query=" + query(template) + "&format=JSON"))
       res["results"]["bindings"].map{|d| d["sampleid"]["value"]}.uniq # an array of biosample id
     end
   end
