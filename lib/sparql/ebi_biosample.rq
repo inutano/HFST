@@ -1,0 +1,30 @@
+PREFIX biosd-terms: <http://rdf.ebi.ac.uk/terms/biosd/>
+PREFIX pav: <http://purl.org/pav/2.0/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX sio: <http://semanticscience.org/resource/>
+
+SELECT DISTINCT ?sampleid
+
+where {
+  ?sgroup sio:SIO_000059 ?sample ;
+          pav:derivedFrom ?webRec .
+
+  ?webRec dcterms:identifier ?repoAcc;
+          dcterms:source ?repoName;
+          foaf:page ?repoUrl.
+
+  FILTER(STR(?repoName) = 'ebi.arrayexpress') .
+
+  ?sample a biosd-terms:Sample ;
+            dcterms:identifier ?sampleid ;
+            biosd-terms:has-sample-attribute ?attr .
+
+  ?attr rdfs:label ?attrLabel ;
+        dc:type ?attrTypeLabel .
+
+  FILTER(LCASE(STR(?attrTypeLabel)) = "cell line") .
+  FILTER(LCASE(STR(?attrLabel)) = "CELL_LINE_NAME" ) . # replace me!
+}
