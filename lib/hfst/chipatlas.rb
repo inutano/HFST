@@ -13,7 +13,7 @@ module HFST
     end
 
     def bedfiles(base_dir)
-      expids = `cat #{@list} | awk -F '$4 == #{@ag} && $6 == #{@cl} { print $1 }'`.split("\n")
+      expids = `cat #{@list} | awk -F '\t' '$4 == "#{@ag}" && $6 == "#{@cl}" { print $1 }'`.split("\n")
       expids.map{|id| File.join(base_dir, id.sub(/...$/,""), id + ".bed") }
     end
   end

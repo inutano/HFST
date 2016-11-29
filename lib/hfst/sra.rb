@@ -2,7 +2,7 @@ module HFST
   class SRA
     class << self
       def biosample_to_runid(run_table, biosampleid)
-        `cat #{run_table} | awk -F '\t' '$9 == #{biosampleid} { print $1 }'`.split("\n")
+        `cat #{run_table} | awk -F '\t' '$9 == "#{biosampleid}" { print $1 }'`.split("\n")
       end
     end
 
