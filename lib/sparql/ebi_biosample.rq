@@ -8,7 +8,7 @@ PREFIX sio: <http://semanticscience.org/resource/>
 
 SELECT DISTINCT ?sampleid
 
-where {
+WHERE {
   ?sgroup sio:SIO_000059 ?sample ;
           pav:derivedFrom ?webRec .
 
@@ -28,3 +28,5 @@ where {
   FILTER(LCASE(STR(?attrTypeLabel)) = "cell line") .
   FILTER(LCASE(STR(?attrLabel)) = "CELL_LINE_NAME" ) . # replace me!
 }
+
+LIMIT 50
