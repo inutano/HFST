@@ -1,16 +1,17 @@
 require 'open-uri'
 
 namespace :hfst do
-  directory DATA_DIR
-  chip_dir = File.join(DATA_DIR, "chipatlas")
-  directory chip_dir
-
   desc "initialize repository"
   task :init => [
     :download_chipatlas_bedfiles,
     :modify_bedfiles,
     :download_sra_table,
   ]
+
+  # directories for chip-seq data
+  chip_dir = File.join(DATA_DIR, "chipatlas")
+  directory DATA_DIR
+  directory chip_dir
 
   exps_list = File.join(chip_dir, "chip_experiments.tab")
   file exps_list do |t|
@@ -44,6 +45,16 @@ namespace :hfst do
     end
   end
 
-  task :download_sra_table do |t|
+  # directory for sra metadata
+  sra_dir = File.join(DATA_DIR, "sra")
+  directory sra_dir
+
+  run_members = File.join(sra_dir, "SRA_Run_Members.tab")
+  file run_members => sra_dir do |t|
+    sh "cd #{sra_dir} && wget 'ftp://ftp.ncbi.nlm.nih.gov/sra/reports/Metadata/SRA_Run_Members.tab'"
+  end
+
+  task :download_sra_table => run_members do
+    # do nothing
   end
 end
